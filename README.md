@@ -1,7 +1,7 @@
 # RecruitPulse 智能招聘系统
 
 > 版本：v3.1 | 技术栈：Vue 3 + Vite + Vant 4 + Pinia + ECharts
-> 纯前端 SPA，零后端依赖，localStorage 持久化 + 本地 mock AI 解析
+> 纯前端 SPA，仅供展示使用，localStorage 持久化 + 本地 mock AI 解析
 <img width="1984" height="1125" alt="image" src="https://github.com/user-attachments/assets/f2454d3d-55ef-4a15-9f01-1d92855441bf" />
 
 ---
@@ -27,8 +27,9 @@
 - **AI 智能解析**：基于正则 + 关键词匹配，从聊天记录中提取教育/工作/项目信息
 - **结构化编辑**：动态表单支持增删学历、工作、项目条目
 - **推送确认**：将解析结果推送给候选人复核
+<img width="2000" height="1097" alt="image" src="https://github.com/user-attachments/assets/5cf74ed1-c34a-4951-9e93-963e88470f61" />
 
-> 📸 **截图占位**：请在此处插入「导入 Tab」页面截图（含候选人卡片列表、AI 解析结果展开状态）
+
 
 ---
 
@@ -49,7 +50,8 @@
 3. 点击卡片查看结构化详情、原始聊天记录
 4. **通过** → 进入面试流程池 / **淘汰** → 填写理由归档
 
-> 📸 **截图占位**：请在此处插入「筛选 Tab」页面截图（含搜索栏、打分排序卡片、筛选详情页）
+<img width="2000" height="1099" alt="image" src="https://github.com/user-attachments/assets/734b2619-dd3e-4ca8-9120-42747a0d38ff" />
+
 
 ---
 
@@ -77,7 +79,8 @@
 | 待评价 | 面试已完成，等待评价 | 面试时间 + 评价表单 |
 | 已完成 | 已评价归档 | 通过/不通过 + 评价摘要 |
 
-> 📸 **截图占位**：请在此处插入「流程 Tab」页面截图（含四个 Tab 切换状态、空闲时间录入区）
+<img width="2000" height="1099" alt="image" src="https://github.com/user-attachments/assets/6a72a92f-7ecd-4fb7-9a02-a9b386e600bf" />
+
 
 ---
 
@@ -95,7 +98,8 @@
 - 交互式图例，支持点击切换显示
 - 仅显示人数 > 0 的分类，自动过滤空数据
 
-> 📸 **截图占位**：请在此处插入「数据 Tab」页面截图（含 KPI 数字卡片 + ECharts 饼图）
+<img width="2000" height="1099" alt="image" src="https://github.com/user-attachments/assets/d7acb68e-4c6b-4a60-a28e-431d12344a73" />
+
 
 ---
 
@@ -126,4 +130,4 @@ npm run dev
 npm run build
 ```
 
-项目为纯前端应用，无需后端服务。所有数据存储在浏览器 localStorage 中，首次启动自动加载 5 条示例候选人数据覆盖完整流程。
+项目目前为纯前端展示应用，无需后端服务。所有数据存储在浏览器 localStorage 中，首次启动自动加载 5 条示例候选人数据覆盖完整流程。
