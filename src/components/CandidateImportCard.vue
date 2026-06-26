@@ -11,14 +11,14 @@
           {{ candidate.parseStatus === 'done' ? '已解析' : '待解析' }}
         </span>
         <span class="tag" v-if="candidate.chatRecords.length">聊天已导入</span>
+        <span class="tag muted" v-else>未导入</span>
       </div>
     </div>
 
     <!-- ─── 操作按钮 ─── -->
     <div class="card-actions">
-      <input ref="chatInput" type="file" accept=".json" style="display:none" @change="onImportChat" />
-      <van-button size="small" icon="description-o" type="primary" plain @click="$refs.chatInput.click()">
-        聊天记录
+      <van-button size="small" icon="add-o" type="primary" plain @click="handleMockImport" :loading="mockImporting">
+        模拟导入聊天记录
       </van-button>
 
       <van-button size="small" icon="smile-comment-o" type="success"
@@ -94,6 +94,7 @@
 import { ref, reactive, watch, computed } from 'vue'
 import { useCandidateStore } from '@/stores/candidate.js'
 import { showToast } from 'vant'
+import { generateMockChat } from '@/utils/mock-chat.js'
 import StructuredDataView from './StructuredDataView.vue'
 import DynamicArrayForm from './DynamicArrayForm.vue'
 
@@ -104,21 +105,27 @@ const store = useCandidateStore()
 const showChat = ref(false)
 const showEdit = ref(false)
 const parsing = ref(false)
+const mockImporting = ref(false)
 const sending = ref(false)
 const editData = reactive({ gender: '', age: null, email: '', education: [], work: [], project: [] })
 
 const canParse = computed(() => {
-  return props.candidate.chatRecords.some(r => r.type === 'resume')
+  return props.candidate.chatRecords.length > 0
 })
 const parseSourceHint = computed(() => {
   const c = props.candidate
+  const totalCount = c.chatRecords.length
   const resumeCount = c.chatRecords.filter(r => r.type === 'resume').length
-  return resumeCount ? `将解析: 聊天中${resumeCount}条简历信息` : '请先导入聊天记录'
+  if (!totalCount) return '请先导入聊天记录'
+  if (resumeCount) return `待解析：聊天记录 ${totalCount} 条（含 ${resumeCount} 条简历信息）`
+  return `待解析：聊天记录 ${totalCount} 条`
 })
 const parseDoneSourceHint = computed(() => {
   const c = props.candidate
-  if (c.chatRecords.some(r => r.type === 'resume')) return '来自聊天记录'
-  return ''
+  const totalCount = c.chatRecords.length
+  const resumeCount = c.chatRecords.filter(r => r.type === 'resume').length
+  if (resumeCount) return `基于 ${totalCount} 条聊天记录（含 ${resumeCount} 条简历信息）解析完成`
+  return `基于 ${totalCount} 条聊天记录解析完成`
 })
 
 const eduFields = [{ key: 'school', label: '学校' }, { key: 'major', label: '专业' }, { key: 'period', label: '时间' }]
@@ -128,29 +135,15 @@ const blankEdu = { school: '', major: '', period: '' }
 const blankWork = { company: '', role: '', period: '', content: '' }
 const blankProj = { name: '', period: '', role: '', content: '' }
 
-// ─── 文件导入 ───
-function onImportChat(e) {
-  const file = e.target.files[0]
-  if (!file) return
-  const reader = new FileReader()
-  reader.onload = (ev) => {
-    try {
-      const records = JSON.parse(ev.target.result)
-      if (!Array.isArray(records)) throw new Error('必须是JSON数组')
-      for (const r of records) {
-        if (!['hr', 'candidate'].includes(r.role)) throw new Error(`role必须为hr或candidate，收到: ${r.role}`)
-        if (!r.content) throw new Error('content不能为空')
-        if (r.type && !['chat', 'resume', 'file'].includes(r.type)) throw new Error(`type必须为chat/resume/file，收到: ${r.type}`)
-        if (r.time && !/^\d{4}-\d{2}-\d{2}\s+\d{2}:\d{2}/.test(r.time)) throw new Error(`time格式错误，应为 YYYY-MM-DD HH:mm`)
-      }
-      store.importChatRecords(props.candidate.id, records)
-      showToast(`已导入${records.length}条聊天记录`)
-    } catch (err) {
-      showToast('格式错误: ' + err.message)
-    }
-  }
-  reader.readAsText(file)
-  e.target.value = ''
+// ─── 模拟导入 ───
+function handleMockImport() {
+  mockImporting.value = true
+  setTimeout(() => {
+    const records = generateMockChat(props.candidate.name)
+    store.importChatRecords(props.candidate.id, records)
+    mockImporting.value = false
+    showToast(`已模拟导入${records.length}条聊天记录`)
+  }, 400)
 }
 
 // ─── AI 解析 ───

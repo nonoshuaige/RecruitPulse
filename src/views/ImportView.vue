@@ -9,25 +9,29 @@
       <div class="empty-text">暂无候选人，点击上方按钮录入</div>
     </div>
 
-    <CandidateImportCard
-      v-for="c in store.candidates"
-      :key="c.id"
-      :candidate="c"
-      @delete="handleDelete(c.id)"
-    />
+    <div ref="listTop">
+      <CandidateImportCard
+        v-for="c in store.candidates"
+        :key="c.id"
+        :candidate="c"
+        @delete="handleDelete(c.id)"
+      />
+    </div>
 
-    <van-dialog v-model:show="showAdd" title="新增候选人" show-cancel-button
-      @confirm="handleAdd" @cancel="resetForm">
-      <div style="padding:16px">
-        <van-field v-model="form.name" label="姓名" placeholder="请输入姓名" />
-        <van-field v-model="form.phone" label="手机号" placeholder="请输入手机号" type="tel" maxlength="11" />
+    <van-popup v-model:show="showAdd" position="center" round :style="{ width: '85%', padding: '20px' }">
+      <h3 style="text-align:center; margin-bottom:12px">新增候选人</h3>
+      <van-field v-model="form.name" label="姓名" placeholder="请输入姓名" />
+      <van-field v-model="form.phone" label="手机号" placeholder="请输入手机号" type="tel" maxlength="11" />
+      <div style="display:flex; gap:12px; margin-top:16px">
+        <van-button block @click="handleCancel">取消</van-button>
+        <van-button block type="primary" @click="handleAdd">确认录入</van-button>
       </div>
-    </van-dialog>
+    </van-popup>
   </div>
 </template>
 
 <script setup>
-import { ref, reactive } from 'vue'
+import { ref, reactive, nextTick } from 'vue'
 import { useCandidateStore } from '@/stores/candidate.js'
 import { showToast, showConfirmDialog } from 'vant'
 import CandidateImportCard from '@/components/CandidateImportCard.vue'
@@ -35,15 +39,25 @@ import CandidateImportCard from '@/components/CandidateImportCard.vue'
 const store = useCandidateStore()
 const showAdd = ref(false)
 const form = reactive({ name: '', phone: '' })
+const listTop = ref(null)
+
+function resetForm() { form.name = ''; form.phone = '' }
+
+function handleCancel() {
+  resetForm()
+  showAdd.value = false
+}
 
 function handleAdd() {
   const res = store.addCandidate(form.name, form.phone)
   showToast(res.msg)
-  if (res.ok) resetForm()
-  else return false  // prevent dialog close
+  if (!res.ok) return
+  resetForm()
+  showAdd.value = false
+  nextTick(() => {
+    listTop.value?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+  })
 }
-
-function resetForm() { form.name = ''; form.phone = '' }
 
 async function handleDelete(id) {
   try {
