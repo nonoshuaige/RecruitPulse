@@ -1,0 +1,74 @@
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f7f8fa; -webkit-font-smoothing: antialiased; }
+
+:root {
+  --primary: #1989fa;
+  --success: #07c160;
+  --danger: #ee0a24;
+  --warning: #ff976a;
+  --text: #323233;
+  --text-light: #969799;
+  --bg: #f7f8fa;
+  --white: #fff;
+  --border: #ebedf0;
+  --shadow: 0 2px 12px rgba(0,0,0,0.06);
+}
+
+.app { max-width: 480px; margin: 0 auto; min-height: 100vh; display: flex; flex-direction: column; background: var(--bg); position: relative; }
+.app-header { padding: 14px 16px; background: var(--white); text-align: center; border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 10; }
+.app-header h2 { font-size: 17px; font-weight: 600; color: var(--text); }
+.app-main { flex: 1; overflow-y: auto; padding-bottom: 60px; }
+
+.candidate-card { background: var(--white); margin: 12px 16px; border-radius: 10px; padding: 14px; box-shadow: var(--shadow); }
+.candidate-card .card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+.candidate-card .card-header .name { font-size: 16px; font-weight: 600; color: var(--text); }
+.candidate-card .card-header .phone { font-size: 13px; color: var(--text-light); }
+.candidate-card .card-body { font-size: 13px; color: var(--text); line-height: 1.6; }
+.candidate-card .card-actions { display: flex; gap: 8px; margin-top: 12px; flex-wrap: wrap; }
+.candidate-card .card-actions .van-button { font-size: 12px; }
+
+.tag-row { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 6px; }
+.tag { font-size: 11px; padding: 2px 8px; border-radius: 4px; background: #ecf5ff; color: var(--primary); white-space: nowrap; }
+.tag.success { background: #e8f8e8; color: var(--success); }
+.tag.danger { background: #fde8e8; color: var(--danger); }
+.tag.warning { background: #fff3e8; color: var(--warning); }
+
+.status-dot { display: inline-block; width: 6px; height: 6px; border-radius: 50%; margin-right: 4px; }
+.status-dot.pending { background: var(--warning); }
+.status-dot.active { background: var(--primary); }
+.status-dot.done { background: var(--success); }
+.status-dot.fail { background: var(--danger); }
+
+.kpi-row { display: flex; gap: 10px; padding: 16px; }
+.kpi-card { flex: 1; background: var(--white); border-radius: 10px; padding: 16px; text-align: center; box-shadow: var(--shadow); }
+.kpi-card .kpi-num { font-size: 28px; font-weight: 700; }
+.kpi-card .kpi-label { font-size: 12px; color: var(--text-light); margin-top: 4px; }
+.kpi-card.orange .kpi-num { color: var(--warning); }
+.kpi-card.blue .kpi-num { color: var(--primary); }
+.kpi-card.green .kpi-num { color: var(--success); }
+
+.empty-state { text-align: center; padding: 60px 20px; color: var(--text-light); }
+.empty-state .empty-icon { font-size: 48px; margin-bottom: 12px; }
+.empty-state .empty-text { font-size: 14px; }
+
+.section-title { font-size: 14px; font-weight: 600; color: var(--text); padding: 12px 16px 8px; }
+
+.structured-block { background: #f9fafb; border-radius: 8px; padding: 10px 12px; margin: 6px 0; }
+.structured-block .block-title { font-size: 12px; font-weight: 600; color: var(--text-light); margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.5px; }
+.structured-block .block-row { font-size: 13px; color: var(--text); line-height: 1.5; margin-bottom: 2px; }
+.structured-block .block-row .label { color: var(--text-light); margin-right: 4px; }
+
+.chat-bubble { padding: 8px 12px; border-radius: 8px; margin: 4px 0; max-width: 85%; font-size: 13px; line-height: 1.5; }
+.chat-bubble.hr { background: #ecf5ff; align-self: flex-end; margin-left: auto; }
+.chat-bubble.candidate { background: #f5f5f5; }
+.chat-bubble .chat-time { font-size: 10px; color: var(--text-light); margin-top: 2px; }
+
+.slot-picker-section { padding: 16px; background: var(--white); margin: 12px 16px; border-radius: 10px; box-shadow: var(--shadow); }
+.slot-tag { display: inline-block; padding: 6px 12px; margin: 4px; border-radius: 16px; font-size: 12px; cursor: pointer; border: 1px solid var(--border); transition: all 0.2s; }
+.slot-tag.selected { background: var(--primary); color: #fff; border-color: var(--primary); }
+.slot-tag.occupied { background: #f5f5f5; color: #ccc; cursor: not-allowed; }
+
+.score-bar { display: flex; align-items: center; gap: 8px; margin: 8px 0; }
+.score-bar .score-num { font-size: 24px; font-weight: 700; color: var(--primary); }
+.score-bar .score-detail { font-size: 11px; color: var(--text-light); }
+.score-bar .score-detail span { margin-right: 8px; }
