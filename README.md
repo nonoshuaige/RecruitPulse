@@ -2,6 +2,7 @@
 
 > 版本：v3.1 | 技术栈：Vue 3 + Vite + Vant 4 + Pinia + ECharts
 > 纯前端 SPA，零后端依赖，localStorage 持久化 + 本地 mock AI 解析
+<img width="1984" height="1125" alt="image" src="https://github.com/user-attachments/assets/f2454d3d-55ef-4a15-9f01-1d92855441bf" />
 
 ---
 
